@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancelar Atendimento</title>
+</head>
+<body>
+    <h2>Cancelar Atendimento</h2>
+    <form id="cancelarAtendimentoForm">
+        <label for="id">ID do Atendimento:</label>
+        <input type="number" id="id" name="id" required>
+        <button type="submit">Cancelar Atendimento</button>
+    </form>
+
+    <script>
+        document.getElementById('cancelarAtendimentoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('id').value;
+
+            fetch('/cliente/atendimento/cancelar?id=' + id, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Atendimento cancelado com sucesso');
+                    // Lógica adicional após cancelamento bem-sucedido, se necessário
+                } else {
+                    throw new Error('Erro ao cancelar atendimento');
+                }
+            })
+            .catch(error => {
+                alert('Erro: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

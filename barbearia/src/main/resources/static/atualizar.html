@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Atendimento</title>
+</head>
+<body>
+    <h2>Atualizar Atendimento</h2>
+    <form id="atualizarAtendimentoForm">
+        <label for="id">ID do Atendimento:</label>
+        <input type="number" id="id" name="id" required>
+        <label for="descricao">Nova Descrição:</label>
+        <input type="text" id="descricao" name="descricao" required>
+        <button type="submit">Atualizar Atendimento</button>
+    </form>
+
+    <script>
+        document.getElementById('atualizarAtendimentoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('id').value;
+            const descricao = document.getElementById('descricao').value;
+
+            const data = {
+                id: id,
+                descricao: descricao
+            };
+
+            fetch('/cliente/atendimento/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Erro ao atualizar atendimento');
+                }
+            })
+            .then(data => {
+                alert('Atendimento atualizado com sucesso: ' + JSON.stringify(data));
+                // Lógica adicional após atualização bem-sucedida, se necessário
+            })
+            .catch(error => {
+                alert('Erro: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>

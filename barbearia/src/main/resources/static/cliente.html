@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 10px 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="clienteForm">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="text" id="telefone" name="telefone" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('clienteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('/cliente', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Erro ao criar cliente');
+                }
+            })
+            .then(data => {
+                // Após criar o cliente com sucesso, redireciona para atendimento.html
+                window.location.href = '/atendimento.html';
+            })
+            .catch(error => {
+                alert('Erro: ' + error.message);
+            });
+        });
+    </script>
+</body>
+</html>
