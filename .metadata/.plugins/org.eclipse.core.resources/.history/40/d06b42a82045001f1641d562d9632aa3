@@ -1,0 +1,83 @@
+package com.lucas.controllers;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.lucas.models.Barbeiro;
+import com.lucas.models.dtos.DuracaoEnum;
+import com.lucas.models.dtos.HorariosTrabalhoDTO;
+import com.lucas.models.dtos.ServicoGetDTO;
+import com.lucas.models.dtos.ServicoRequestDTO;
+import com.lucas.services.BarbeiroServico;
+import com.lucas.services.HorariosServico;
+import com.lucas.services.ServicoServico;
+
+@RestController
+@RequestMapping(value = "/barbeiros")
+public class BarbeiroControler {
+	
+	@Autowired
+	BarbeiroServico barbeiroServico;
+	
+	@Autowired
+	ServicoServico servicoServico;
+	
+    @Autowired
+    private HorariosServico horariosServico;
+	
+	//Buscar servicos de barbeiroId
+	@GetMapping(value = "/buscarPorIdBarbeiro")
+	public ResponseEntity<List<ServicoGetDTO>> findByIdBarbeiroId(@RequestParam Long barbeiroId){
+		List<ServicoGetDTO> servicos = servicoServico.findByIdBarbeiroId(barbeiroId);
+		return new ResponseEntity<>(servicos, HttpStatus.OK);
+	}
+
+	//Atualizar dados do barbeiro
+	@PutMapping(value = "/atualizar")
+	public ResponseEntity<Void> update(@RequestBody Barbeiro barbeiro){
+		barbeiro = barbeiroServico.update(barbeiro);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	//Cria um novo servico
+	@PostMapping(value = "/criar")
+	public ResponseEntity<Void> create(@RequestBody ServicoRequestDTO servicoRequestDTO){
+		servicoServico.create(servicoRequestDTO);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	//Deletar servico
+	@DeleteMapping(value = "/deletar")
+	public ResponseEntity<Void> deletar(@RequestParam Long id){
+		servicoServico.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	//Busca as duracoes possiveis de um servico
+	@GetMapping("/durations")
+    public ResponseEntity<List<String>> getPossibleDurations() {
+        List<String> durations = servicoServico.getPossibleDurations().stream()
+                                .map(DuracaoEnum::getDescricao)
+                                .collect(Collectors.toList());
+        return ResponseEntity.ok(durations);
+    }
+	
+	//Define os horarios de trabalho
+	@PostMapping("/criar")
+    public ResponseEntity<Void> definirHorarioTrabalho(@RequestBody HorariosTrabalhoDTO horariosTrabalhoDTO) {
+    	horariosServico.criarHorariosTrabalho(horariosTrabalhoDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+}
