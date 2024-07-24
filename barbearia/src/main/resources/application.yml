@@ -1,7 +1,6 @@
-#spring.application.name=barbearia
 spring:
   datasource:
-    driver-class-name:  com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/rest_with_spring_boot_lucas?useTimezone=true&serverTimezone=UTC
     username: root
     password: 1234
@@ -9,10 +8,17 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: update
-   # properties:
-    #  hibernate:
-     #   dialect: org.hibernate.dialect.MySQLDialect
     show-sql: false
   thymeleaf:
-    prefix: classpath:/static/
-    suffix: .html   
+    prefix: classpath:/templates/
+    suffix: .html
+  flyway:
+    enabled: true
+    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_lucas?useTimezone=true&serverTimezone=UTC
+    user: root
+    password: 1234
+    baseline-on-migrate: true  
+  api:
+    security:
+      token:
+        secret: ${JWT_SECRET:my-secret-key}

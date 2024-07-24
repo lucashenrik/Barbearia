@@ -1,0 +1,7 @@
+
+spring:
+  flyway:
+    enabled: true
+    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_lucas?useTimezone=true&serverTimezone=UTC
+    user: root
+    password: 1234

@@ -1,0 +1,6 @@
+package com.lucas.models.dtos;
+
+public class RegistrarDTO(String email,	String senha, String role) {
+
+	
+}

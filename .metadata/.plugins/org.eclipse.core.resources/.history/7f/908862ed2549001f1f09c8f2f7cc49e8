@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_lucas?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: 1234
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  flyway:
+    enabled: true
+    url: jdbc:mysql://localhost:3306/rest_with_spring_boot_lucas?useTimezone=true&serverTimezone=UTC
+    user: root
+    password: 1234
+    baseline-on-migrate: true  
+  api:
+    security:
+      token:
+        secret: ${JWT_SECRET:my-secret-key}

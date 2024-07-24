@@ -1,0 +1,52 @@
+package com.lucas.Infra.Security;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.lucas.models.Barbeiro;
+
+@Service
+public class TokenServico {
+	
+	@Value("${api.security.token.secret}")
+	private String secret;
+
+	public String gerarToken(Barbeiro barbeiro) {
+		try {
+			Algorithm algoritimo = Algorithm.HMAC256(secret);
+			String token = JWT.create()
+					.withIssuer("auth-api") //indica de onde o token esta sendo gerado
+					.withSubject(barbeiro.getEmail()) //faz a criptografia com o email junto para que na hora da descrptografia, idenfique o barbeiro
+					.withExpiresAt(genExpirationDate()) //tempo para expiracao
+					.sign(algoritimo); // faz a assinatura>??
+			return token;
+		} catch (JWTCreationException exception) {
+			throw new RuntimeException("Erro ao gerar token.", exception);
+		}
+	}
+	
+	public String validarToken(String token) {
+		try {
+			Algorithm algoritimo = Algorithm.HMAC256(secret);
+			return JWT.require(algoritimo)
+					.withIssuer("auth-api")
+					.build()
+					.verify(token)
+					.getSubject();
+		} catch (JWTVerificationException exception) {
+			return "";
+		}
+	}
+	
+	private Instant genExpirationDate() {
+		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+	}
+}
