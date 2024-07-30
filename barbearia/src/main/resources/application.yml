@@ -22,3 +22,7 @@ spring:
     security:
       token:
         secret: ${JWT_SECRET:my-secret-key}
+  logging:
+    level:
+      org.springframework.security: DEBUG
+      org.springframework.web: DEBUG

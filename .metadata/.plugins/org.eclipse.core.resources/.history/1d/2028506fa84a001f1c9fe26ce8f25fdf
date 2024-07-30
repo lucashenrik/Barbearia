@@ -1,0 +1,5 @@
+package com.lucas.repositories;
+
+public class AdministradorRepositorio {
+
+}

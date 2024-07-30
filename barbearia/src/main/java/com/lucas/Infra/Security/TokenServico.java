@@ -68,41 +68,44 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lucas.exceptions.InvalidTokenException;
+import com.lucas.models.Adminstrador;
 import com.lucas.models.Barbeiro;
 
 @Service
 public class TokenServico {
 
-    @Value("${jwt.secret:my-secret-key}")
-    private String secret;
+	@Value("${jwt.secret:my-secret-key}")
+	private String secret;
 
-    public String gerarToken(Barbeiro barbeiro) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create()
-                    .withIssuer("auth-api")
-                    .withSubject(barbeiro.getEmail())
-                    .withExpiresAt(genExpirationDate())
-                    .sign(algorithm);
-        } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao gerar token.", exception);
-        }
-    }
+	public String AdminGerarToken(Adminstrador admin) {
+		return gerarToken(admin.getEmail());
+	}
 
-    public String validarToken(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            JWTVerifier verifier = JWT.require(algorithm)
-                    .withIssuer("auth-api")
-                    .build();
-            return verifier.verify(token).getSubject();
-        } catch (JWTVerificationException exception) {
-            throw new InvalidTokenException("Token inválido ou expirado.");
-        }
-    }
+	public String BarbGerarToken(Barbeiro barbeiro) {
+		return gerarToken(barbeiro.getEmail());
+	}
 
-    private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
-    }
+	private String gerarToken(String email) {
+		try {
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			return JWT.create().withIssuer("auth-api").withSubject(email).withExpiresAt(genExpirationDate())
+					.sign(algorithm);
+		} catch (JWTCreationException exception) {
+			throw new RuntimeException("Erro ao gerar token.", exception);
+		}
+	}
+
+	public String validarToken(String token) {
+		try {
+			Algorithm algorithm = Algorithm.HMAC256(secret);
+			JWTVerifier verifier = JWT.require(algorithm).withIssuer("auth-api").build();
+			return verifier.verify(token).getSubject();
+		} catch (JWTVerificationException exception) {
+			throw new InvalidTokenException("Token inválido ou expirado.");
+		}
+	}
+
+	private Instant genExpirationDate() {
+		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+	}
 }
-

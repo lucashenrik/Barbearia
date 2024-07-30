@@ -8,7 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.lucas.exceptions.InvalidTokenException;
+import com.lucas.models.Adminstrador;
 import com.lucas.models.Barbeiro;
+import com.lucas.repositories.AdministradorRepositorio;
 import com.lucas.repositories.BarbeiroRepositorio;
 
 import jakarta.servlet.FilterChain;
@@ -21,57 +24,65 @@ public class SecurityFilter extends OncePerRequestFilter {
 
 	@Autowired
 	BarbeiroRepositorio repositorio;
-	
+
+	@Autowired
+	AdministradorRepositorio adminRepositorio;
+
 	@Autowired
 	TokenServico tokenServico;
-	
-	/*@Override
+
+	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		var token = this.recoverToken(request);
-		
-		/*if(token != null) {
-			var  login = tokenServico.validarToken(token);
-			//UserDetails user = repositorio.findByEmail(login);
-			Barbeiro user = repositorio.findByEmail(login);
-			
-			var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
-		}//////
-		if(token != null) {
-            var login = tokenServico.validarToken(token);
-            Barbeiro user = repositorio.findByEmail(login);
-            
-            if (user != null) {
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        }
+		String path = request.getRequestURI();
+		//System.out.println("Requisição para: " + path);
+
+		// Ignora a validação de token para as rotas de login e registro
+		if (path.equals("/auth/login") || path.equals("/auth/registrar")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
+		String token = recoverToken(request);
+		System.out.println("Token recuperado: " + token);
+
+		if (token != null) {
+			try {
+				String login = tokenServico.validarToken(token);
+				// System.out.println("Login recuperado do token: " + login);
+
+				Adminstrador admin = adminRepositorio.findByEmail(login);
+				if (admin != null) {
+					// System.out.println("Administrador encontrado: " + admin.getEmail());
+					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(admin,
+							null, admin.getAuthorities());
+					SecurityContextHolder.getContext().setAuthentication(authentication);
+				} else {
+					Barbeiro barbeiro = repositorio.findByEmail(login);
+					if (barbeiro != null) {
+						// System.out.println("Barbeiro encontrado: " + barbeiro.getEmail());
+						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+								barbeiro, null, barbeiro.getAuthorities());
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					} else {
+						System.out.println("Usuário não encontrado para o login: " + login);
+					}
+				}
+			} catch (InvalidTokenException e) {
+				System.out.println("Token inválido: " + e.getMessage());
+			}
+		} else {
+			System.out.println("Cabeçalho de autorização não encontrado ou inválido");
+		}
+
 		filterChain.doFilter(request, response);
-	}*/
-	
-	@Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7); // Remove o prefixo "Bearer "
-            String email = tokenServico.validarToken(token);
-            if (email != null) {
-                Barbeiro userDetails = repositorio.findByEmail(email);
-                System.out.println("authoridadess: " + userDetails.getAuthorities());
-                var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
-        }
-        filterChain.doFilter(request, response);
-    }
+	}
 
-	/*private String recoverToken(HttpServletRequest request) {
-		var authHeader = request.getHeader("Authorization");
-		if(authHeader == null) return null;
-		return authHeader.replace("Bearer", "");
-	}*/
-
+	private String recoverToken(HttpServletRequest request) {
+		String authHeader = request.getHeader("Authorization");
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			return authHeader.substring(7);
+		}
+		return null;
+	}
 }

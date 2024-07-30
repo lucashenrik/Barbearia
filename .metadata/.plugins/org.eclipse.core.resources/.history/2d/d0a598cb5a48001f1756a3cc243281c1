@@ -1,5 +1,0 @@
-package com.lucas.models.dtos;
-
-public class RegistrarDTO {
-
-}

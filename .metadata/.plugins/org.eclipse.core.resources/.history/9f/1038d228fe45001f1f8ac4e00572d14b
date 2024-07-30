@@ -1,6 +1,0 @@
-CREATE TABLE tb_barbeiro (
-    id TEXT PRIMARY KEY NOT NULL,
-    nome TEXT NOT NULL UNIQUE,
-  	password TEXT NOT NULL
-  	role TEXT NOT NULL
-);

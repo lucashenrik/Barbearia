@@ -1,0 +1,33 @@
+package com.lucas.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.lucas.models.Adminstrador;
+import com.lucas.models.dtos.RegistrarDTO;
+import com.lucas.repositories.AdministradorRepositorio;
+
+@RestController
+@RequestMapping(value = "/admin")
+public class AdminstradorControler {
+
+	@Autowired
+	AdministradorRepositorio repositorio;
+	
+	@PostMapping
+	ResponseEntity<?> criar (RegistrarDTO dto){
+		Adminstrador administrador = new Adminstrador();
+		
+		administrador.setNome(dto.nome());
+		administrador.setEmail(dto.email());
+		administrador.setSenha(dto.senha());
+		administrador.setRole(dto.role());
+		
+		repositorio.save(administrador);
+		
+		return ResponseEntity.ok().build();
+	}
+}

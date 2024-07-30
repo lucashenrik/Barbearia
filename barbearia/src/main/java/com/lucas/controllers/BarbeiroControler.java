@@ -21,32 +21,32 @@ import com.lucas.services.BarbeiroServico;
 @RestController
 @RequestMapping(value = "/barbeiros")
 public class BarbeiroControler {
-	
+
 	@Autowired
 	BarbeiroServico barbeiroServico;
-	
+
 	@GetMapping(value = "/buscar")
-	public ResponseEntity<List<BarbeiroGetDTO>> findAll(){
+	public ResponseEntity<List<BarbeiroGetDTO>> findAll() {
 		List<BarbeiroGetDTO> barbeiros = barbeiroServico.findAll();
 		return new ResponseEntity<>(barbeiros, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/criar")
-	public ResponseEntity<Barbeiro> create(@RequestBody Barbeiro barbeiro){
+	public ResponseEntity<Barbeiro> create(@RequestBody Barbeiro barbeiro) {
 		barbeiro = barbeiroServico.create(barbeiro);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping(value = "/atualizar")
-	public ResponseEntity<Void> update(@RequestBody Barbeiro barbeiro){
+	public ResponseEntity<Void> update(@RequestBody Barbeiro barbeiro) {
 		barbeiro = barbeiroServico.update(barbeiro);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping(value = "/deletar")
-	public ResponseEntity<Void> delete(@RequestParam Long id){
+	public ResponseEntity<Void> delete(@RequestParam Long id) {
 		barbeiroServico.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 }

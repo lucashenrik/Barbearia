@@ -1,6 +1,0 @@
-package com.lucas.models.dtos;
-
-public record RegistrarDTO(String email,	String senha, String role) {
-
-	
-}

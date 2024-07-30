@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -71,18 +72,26 @@ public class Barbeiro implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "administrador_id")
     @JsonIgnore
-    private Administrador administrador;
+    private Adminstrador administrador;
+    
+    @ManyToOne
+    @JoinColumn(name = "barbearia_id")
+    @JsonBackReference
+    private Barbearia barbearia;
 
     public Barbeiro() {}
-    
-    public Barbeiro(String nome, String email, String telefone, String senha, EnumRoles role) {
-    	this.nome = nome;
-    	this.email = email;
-    	this.telefone = telefone;
-    	this.senha = senha;
-    	this.role = role;
-    }
-    
+
+	public Barbeiro(String nome, String email, String telefone, String senha, EnumRoles role,
+			Adminstrador administrador, Barbearia barbearia) {
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
+		this.senha = senha;
+		this.role = role;
+		this.administrador = administrador;
+		this.barbearia = barbearia;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -123,6 +132,14 @@ public class Barbeiro implements UserDetails {
 		this.senha = senha;
 	}
 
+	public EnumRoles getRole() {
+		return role;
+	}
+
+	public void setRole(EnumRoles role) {
+		this.role = role;
+	}
+
 	public List<Servico> getServicos() {
 		return servicos;
 	}
@@ -147,29 +164,30 @@ public class Barbeiro implements UserDetails {
 		this.horariosTrabalho = horariosTrabalho;
 	}
 
-	public Administrador getAdministrador() {
+	public Adminstrador getAdministrador() {
 		return administrador;
 	}
 
-	public void setAdministrador(Administrador administrador) {
+	public void setAdministrador(Adminstrador administrador) {
 		this.administrador = administrador;
+	}
+
+	public Barbearia getBarbearia() {
+		return barbearia;
+	}
+
+	public void setBarbearia(Barbearia barbearia) {
+		this.barbearia = barbearia;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-	public EnumRoles getRole() {
-		return role;
-	}
-
-	public void setRole(EnumRoles role) {
-		this.role = role;
-	}
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(administrador, atendimentos, email, horariosTrabalho, id, nome, senha, servicos, telefone);
+		return Objects.hash(administrador, atendimentos, barbearia, email, horariosTrabalho, id, nome, role, senha,
+				servicos, telefone);
 	}
 
 	@Override
@@ -182,10 +200,10 @@ public class Barbeiro implements UserDetails {
 			return false;
 		Barbeiro other = (Barbeiro) obj;
 		return Objects.equals(administrador, other.administrador) && Objects.equals(atendimentos, other.atendimentos)
-				&& Objects.equals(email, other.email) && Objects.equals(horariosTrabalho, other.horariosTrabalho)
-				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
-				&& Objects.equals(senha, other.senha) && Objects.equals(servicos, other.servicos)
-				&& Objects.equals(telefone, other.telefone);
+				&& Objects.equals(barbearia, other.barbearia) && Objects.equals(email, other.email)
+				&& Objects.equals(horariosTrabalho, other.horariosTrabalho) && Objects.equals(id, other.id)
+				&& Objects.equals(nome, other.nome) && role == other.role && Objects.equals(senha, other.senha)
+				&& Objects.equals(servicos, other.servicos) && Objects.equals(telefone, other.telefone);
 	}
 
 	@Override

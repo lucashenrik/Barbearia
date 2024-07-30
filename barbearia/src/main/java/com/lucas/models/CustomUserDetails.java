@@ -8,7 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
 
-	private static final long serialVersionUID = -3232298329147722752L;
+	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = -3232298329147722752L;
 	
 	private Barbeiro barbeiro;
 
