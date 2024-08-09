@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lucas.models.Atendimentos;
 import com.lucas.models.dtos.AtendimentoGetDTO;
 import com.lucas.models.dtos.AtendimentoRequestDTO;
+import com.lucas.models.dtos.BarbeiroGetDTO;
+import com.lucas.models.dtos.ServicoGetDTO;
 import com.lucas.services.AtendimentoConverter;
 import com.lucas.services.AtendimentoServico;
 
@@ -27,7 +29,7 @@ public class AtendimentoControler {
 	@Autowired
 	AtendimentoServico atendimentoServico;
 	
-	@GetMapping(value = "/buscar")
+	@GetMapping//(value = "/buscar")
 	public ResponseEntity<List<AtendimentoGetDTO>> findAtendimentos(@RequestParam Long clienteId){
 		List<AtendimentoGetDTO> atendimentosDTO = atendimentoServico.findAtendimentosByClienteId(clienteId);
 		
@@ -61,4 +63,15 @@ public class AtendimentoControler {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	@GetMapping(value = "/barbeiros-disponiveis")
+	public ResponseEntity<List<BarbeiroGetDTO>> buscarBarbeiros(){
+		List<BarbeiroGetDTO> barbeiros = atendimentoServico.findAllBarbeiros();
+		return new ResponseEntity<>(barbeiros, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/buscarPorIdBarbeiro")
+	public ResponseEntity<List<ServicoGetDTO>> findServicoByIdBarbeiroId(@RequestParam Long barbeiroId){
+		List<ServicoGetDTO> servicos = atendimentoServico.findServicoByIdBarbeiroId(barbeiroId);
+		return new ResponseEntity<>(servicos, HttpStatus.OK);
+	}
 }

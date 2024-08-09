@@ -1,0 +1,65 @@
+package com.lucas.services;
+
+import java.time.Duration;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.lucas.exceptions.ResourceNotFoundException;
+import com.lucas.models.Barbeiro;
+import com.lucas.models.Servico;
+import com.lucas.models.dtos.BarbeiroGetDTO;
+import com.lucas.models.dtos.ServicoGetDTO;
+import com.lucas.models.dtos.ServicoRequestDTO;
+import com.lucas.repositories.BarbeiroRepositorio;
+
+@Service
+public class ConverterServico {
+	
+	@Autowired
+	BarbeiroRepositorio barbeiroRepositorio;
+	
+	@Autowired
+	BarbeiroServico barbeiroServico;
+
+	public ServicoGetDTO convertToDTO(Servico servico) {
+		ServicoGetDTO servicoDTO = new ServicoGetDTO();
+		servicoDTO.setNomeServico(servico.getNomeServico());
+		servicoDTO.setPreco(servico.getPreco());
+		Duration duracao = servico.getDuracao();
+		long duracaoMinutos = duracao.toMinutes();
+		servicoDTO.setDuracaoMinutos(duracaoMinutos);
+		servicoDTO.setNomeBarbeiro(servico.getBarbeiro().getNome());
+		servicoDTO.setEmail(servico.getBarbeiro().getEmail());
+		servicoDTO.setTelefone(servico.getBarbeiro().getTelefone());
+		
+		return servicoDTO;
+	}
+	
+	public ServicoGetDTO converterServicoParaDTO(ServicoRequestDTO servicoRequestDTO) {
+		BarbeiroGetDTO barbeiroDTO = barbeiroServico.converterBarbeiroParaDTO(servicoRequestDTO.getBarbeiroId());
+		
+		ServicoGetDTO servicoDTO = new ServicoGetDTO();
+		servicoDTO.setNomeServico(servicoRequestDTO.getNomeServico());
+		servicoDTO.setPreco(servicoRequestDTO.getPreco());
+		Duration duracao = convertDuracaoEnumToDuration(servicoRequestDTO.getDuracao());
+		servicoDTO.setDuracao(duracao);
+		servicoDTO.setNomeBarbeiro(barbeiroDTO.getNomeBarbeiro());
+		servicoDTO.setTelefone(barbeiroDTO.getTelefone());
+		servicoDTO.setEmail(barbeiroDTO.getEmail());
+		 
+		return servicoDTO;
+	}
+	
+	private Servico converterRequestToServico(ServicoRequestDTO servicoRequestDTO) {
+		Barbeiro barbeiro = barbeiroRepositorio.findById(servicoRequestDTO.getBarbeiroId())
+                .orElseThrow(() -> new ResourceNotFoundException("Barbeiro não encontrado."));
+		Servico servico = new Servico();
+		servico.setNomeServico(servicoRequestDTO.getNomeServico());
+		servico.setPreco(servicoRequestDTO.getPreco());
+		Duration duracao = convertDuracaoEnumToDuration(servicoRequestDTO.getDuracao());
+		servico.setDuracao(duracao);
+		servico.setBarbeiro(barbeiro);
+        return servico;
+	}
+}

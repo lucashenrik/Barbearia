@@ -1,7 +1,10 @@
 package com.lucas.services;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,12 +16,16 @@ import com.lucas.exceptions.ResourceNotFoundException;
 import com.lucas.models.Atendimentos;
 import com.lucas.models.Barbeiro;
 import com.lucas.models.Cliente;
+import com.lucas.models.HorariosTrabalho;
 import com.lucas.models.Servico;
 import com.lucas.models.dtos.AtendimentoGetDTO;
 import com.lucas.models.dtos.AtendimentoRequestDTO;
+import com.lucas.models.dtos.BarbeiroGetDTO;
+import com.lucas.models.dtos.ServicoGetDTO;
 import com.lucas.repositories.AtendimentoRepositorio;
 import com.lucas.repositories.BarbeiroRepositorio;
 import com.lucas.repositories.ClienteRepositorio;
+import com.lucas.repositories.HorariosTrabalhoRepositorio;
 import com.lucas.repositories.ServicoRepositorio;
 
 @Service
@@ -31,10 +38,17 @@ public class AtendimentoServico {
 	ClienteRepositorio clienteRepositorio;
 	
 	@Autowired
+	ServicoRepositorio servicoRepositorio;
+	
+	@Autowired
 	BarbeiroRepositorio barbeiroRepositorio;
 	
 	@Autowired
-	ServicoRepositorio servicoRepositorio;
+    private HorariosTrabalhoRepositorio horariosTrabalhoRepositorio;
+	
+	@Autowired
+	ConverterServico converterServico;
+	
 	
     @Transactional(readOnly = true)
 	public List<AtendimentoGetDTO> findAtendimentosByClienteId(Long clienteId) {
@@ -42,7 +56,7 @@ public class AtendimentoServico {
         
         // Inicializa explicitamente a coleção de serviços para evitar LazyInitializationException
         atendimentos.forEach(atendimento -> {
-            atendimento.getServicos().size(); // ou Hibernate.initialize(atendimento.getServicos());
+            atendimento.getServicos().size();
         });
         
         return atendimentos.stream()
@@ -89,5 +103,59 @@ public class AtendimentoServico {
 		System.out.println("Horário " + horario + " em " + data + " está ocupado: " + ocupado); // Log para depuração
 		return ocupado;
     }
+	
+	public List<BarbeiroGetDTO> findAllBarbeiros() {
+		List<Barbeiro> barbeiros = barbeiroRepositorio.findAll();
+		
+		List<BarbeiroGetDTO> barbeiroDTOs = barbeiros.stream()
+				.map(barbeiro -> {
+					BarbeiroGetDTO barbeiroDTO = new BarbeiroGetDTO();
+					barbeiroDTO.setNomeBarbeiro(barbeiro.getNome());
+					barbeiroDTO.setEmail(barbeiro.getEmail());
+					barbeiroDTO.setTelefone(barbeiro.getTelefone());
+					return barbeiroDTO;
+				})
+				.collect(Collectors.toList());
+		
+		return barbeiroDTOs;
+	}
+	
+	public List<ServicoGetDTO> findServicoByIdBarbeiroId(Long barbeiroId) {
+		List<Servico> servicos = servicoRepositorio.findByBarbeiroId(barbeiroId);
+		 return servicos.stream().map(converterServico::convertToDTO).collect(Collectors.toList());
+	}
 
+	 public List<LocalTime> getHorariosDisponiveis(Long barbeiroId, LocalDateTime data, Duration duracaoServico) {
+	        DayOfWeek diaDaSemana = data.getDayOfWeek();
+	        List<HorariosTrabalho> horariosTrabalho = horariosTrabalhoRepositorio.findByBarbeiroIdAndDiaDaSemana(barbeiroId, diaDaSemana);
+
+	        System.out.println("Horarios de trabalho encontrados: " + horariosTrabalho.size()); // Log para depuração
+
+	        List<LocalTime> horariosDisponiveis = new ArrayList<>();
+
+	        for (HorariosTrabalho horario : horariosTrabalho) {
+	            LocalTime horaAtual = horario.getHoraInicio();
+	            LocalTime horaFim = horario.getHoraFim();
+	            LocalTime horaInicioAlmoco = horario.getHoraInicioAlmoco();
+	            LocalTime horaFimAlmoco = horario.getHoraFimAlmoco();
+
+	            while (horaAtual.plus(duracaoServico).isBefore(horaFim) || horaAtual.plus(duracaoServico).equals(horaFim)) {
+	                boolean duranteAlmoco = horaInicioAlmoco != null && horaFimAlmoco != null &&
+	                        (horaAtual.isAfter(horaInicioAlmoco) || horaAtual.equals(horaInicioAlmoco)) &&
+	                        (horaAtual.plus(duracaoServico).isBefore(horaFimAlmoco) || horaAtual.plus(duracaoServico).equals(horaFimAlmoco));
+
+	                if (!duranteAlmoco) {
+	                    if (!horarioEstaOcupado(barbeiroId, data, horaAtual)) {
+	                        horariosDisponiveis.add(horaAtual);
+	                    }
+	                }
+
+	                horaAtual = horaAtual.plus(duracaoServico);
+	            }
+	        }
+
+	        System.out.println("Horarios disponíveis: " + horariosDisponiveis); // Log para depuração
+
+	        return horariosDisponiveis;
+	    }
 }
