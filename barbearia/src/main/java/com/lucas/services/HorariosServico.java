@@ -39,6 +39,29 @@ public class HorariosServico {
         return horariosTrabalhoRepositorio.findByBarbeiroId(barbeiroId);
     }
     
+    public List<LocalTime> getHorariosDisponiveisForBarbeiros(Long barbeiroId, LocalDateTime data) {
+        DayOfWeek diaDaSemana = data.getDayOfWeek();
+        List<HorariosTrabalho> horariosTrabalho = horariosTrabalhoRepositorio.findByBarbeiroIdAndDiaDaSemana(barbeiroId, diaDaSemana);
+
+        System.out.println("Horarios de trabalho encontrados: " + horariosTrabalho.size()); // Log para depuração
+
+        List<LocalTime> horariosDisponiveis = new ArrayList<>();
+
+        for (HorariosTrabalho horario : horariosTrabalho) {
+            LocalTime horaAtual = horario.getHoraInicio();
+            LocalTime horaFim = horario.getHoraFim();
+            LocalTime horaInicioAlmoco = horario.getHoraInicioAlmoco();
+            LocalTime horaFimAlmoco = horario.getHoraFimAlmoco();
+
+
+                    if (!atendServico.horarioEstaOcupado(barbeiroId, data, horaAtual)) {
+                        horariosDisponiveis.add(horaAtual);
+                    }
+        }
+
+        return horariosDisponiveis;
+    }
+    
     public List<LocalTime> getHorariosDisponiveis(Long barbeiroId, LocalDateTime data, Duration duracaoServico) {
         DayOfWeek diaDaSemana = data.getDayOfWeek();
         List<HorariosTrabalho> horariosTrabalho = horariosTrabalhoRepositorio.findByBarbeiroIdAndDiaDaSemana(barbeiroId, diaDaSemana);
@@ -115,6 +138,5 @@ public class HorariosServico {
                 }).collect(Collectors.toList());
 
     }
-
     
 }

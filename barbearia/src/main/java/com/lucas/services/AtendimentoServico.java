@@ -63,6 +63,20 @@ public class AtendimentoServico {
                 .map(AtendimentoConverter::toDTO)
                 .collect(Collectors.toList());
     }
+    
+    @Transactional(readOnly = true)
+	public List<AtendimentoGetDTO> findAtendimentosByBarbeiroId(Long barbeiroId) {
+        List<Atendimentos> atendimentos = atendRepositorio.findByClienteId(barbeiroId);
+        
+        // Inicializa explicitamente a coleção de serviços para evitar LazyInitializationException
+        atendimentos.forEach(atendimento -> {
+            atendimento.getServicos().size();
+        });
+        
+        return atendimentos.stream()
+                .map(AtendimentoConverter::toDTO)
+                .collect(Collectors.toList());
+    }
 	
 	public Atendimentos create(Long clienteId, Long barbeiroId, List<Servico> servicoRequestDTO, LocalTime horario) {
 		Cliente cliente = clienteRepositorio.findById(clienteId)

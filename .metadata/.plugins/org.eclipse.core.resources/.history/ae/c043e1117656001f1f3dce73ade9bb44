@@ -1,0 +1,13 @@
+package com.lucas.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.lucas.services.BarbeiroServico;
+
+public class HomeBarbeiroControler {
+	
+	@Autowired
+	BarbeiroServico barbeiroServico;
+	
+	
+}
