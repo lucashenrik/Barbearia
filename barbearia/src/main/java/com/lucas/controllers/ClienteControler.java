@@ -22,20 +22,20 @@ import com.lucas.models.dtos.ClienteGetDTO;
 import com.lucas.services.ClienteServico;
 
 @RestController
-@RequestMapping(value = "/cliente")
+@RequestMapping("/cliente")
 public class ClienteControler {
     
     @Autowired
     ClienteServico clienteServico;
     
-    @GetMapping(value = "/buscar")
+    @GetMapping("/buscar")
     public ResponseEntity<List<ClienteGetDTO>> buscarClientes(){
     	List<ClienteGetDTO> clientesDTO = clienteServico.findAll();
     	
     	return new ResponseEntity<>(clientesDTO, HttpStatus.OK);
     }
     
-    @PostMapping(value = "/criar")
+    @PostMapping("/criar")
     public ResponseEntity<Void> createCliente(@RequestBody Cliente cliente){
         Cliente novoCliente = clienteServico.create(cliente);
         
@@ -47,14 +47,14 @@ public class ClienteControler {
         return ResponseEntity.created(location).build();
     }
     
-    @PutMapping(value = "/atualizar")
+    @PutMapping("/atualizar")
     public ResponseEntity<Void> updateCliente(@RequestBody Cliente cliente){
     	clienteServico.update(cliente);
     	
     	return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
-    @DeleteMapping(value = "/deletar")
+    @DeleteMapping("/deletar")
     public ResponseEntity<Void> delete(@RequestParam Long clienteId){
     	clienteServico.delete(clienteId);
     	

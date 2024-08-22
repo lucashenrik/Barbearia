@@ -19,31 +19,31 @@ import com.lucas.models.dtos.BarbeiroGetDTO;
 import com.lucas.services.BarbeiroServico;
 
 @RestController
-@RequestMapping(value = "/barbeiros")
+@RequestMapping("/barbeiros")
 public class BarbeiroControler {
 
 	@Autowired
 	BarbeiroServico barbeiroServico;
 
-	@GetMapping(value = "/buscar")
+	@GetMapping("/buscar")
 	public ResponseEntity<List<BarbeiroGetDTO>> findAll() {
 		List<BarbeiroGetDTO> barbeiros = barbeiroServico.findAll();
 		return new ResponseEntity<>(barbeiros, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/criar")
+	@PostMapping("/criar")
 	public ResponseEntity<Barbeiro> create(@RequestBody Barbeiro barbeiro) {
 		barbeiro = barbeiroServico.create(barbeiro);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@PutMapping(value = "/atualizar")
+	@PutMapping("/atualizar")
 	public ResponseEntity<Void> update(@RequestBody Barbeiro barbeiro) {
 		barbeiro = barbeiroServico.update(barbeiro);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@DeleteMapping(value = "/deletar")
+	@DeleteMapping("/deletar")
 	public ResponseEntity<Void> delete(@RequestParam Long id) {
 		barbeiroServico.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -54,7 +54,7 @@ public class HorariosTrabalhoControler {
         return ResponseEntity.ok(horarios);
     }
     
-    @PostMapping("/criar")
+    @PostMapping("/criar-horario")
     public ResponseEntity<Void> definirHorarioTrabalho(@RequestBody HorariosTrabalhoDTO horariosTrabalhoDTO) {
     	horariosServico.criarHorariosTrabalho(horariosTrabalhoDTO);
         return new ResponseEntity<>(HttpStatus.OK);

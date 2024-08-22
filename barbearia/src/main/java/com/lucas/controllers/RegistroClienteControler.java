@@ -14,13 +14,13 @@ import com.lucas.models.Cliente;
 import com.lucas.services.RegistroClienteServico;
 
 @RestController
-@RequestMapping(value = "/cliente")
+@RequestMapping("/cliente")
 public class RegistroClienteControler {
     
     @Autowired
     RegistroClienteServico clienteServico;
     
-    @PostMapping(value = "/criar")
+    @PostMapping("/criar-cliente")
     public ResponseEntity<Void> createCliente(@RequestBody Cliente cliente){
         Cliente novoCliente = clienteServico.create(cliente);
         

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lucas.services.HorariosServico;
 
 @RestController
-@RequestMapping(value = "/barbeiros")
+@RequestMapping("/barbeiros")
 public class HorariosControler {
 
 	@Autowired

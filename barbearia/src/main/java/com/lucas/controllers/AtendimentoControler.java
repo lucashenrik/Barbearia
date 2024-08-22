@@ -23,7 +23,7 @@ import com.lucas.services.AtendimentoConverter;
 import com.lucas.services.AtendimentoServico;
 
 @RestController
-@RequestMapping(value = "/atendimento")
+@RequestMapping("/atendimento")
 public class AtendimentoControler {
 
 	@Autowired
@@ -36,7 +36,7 @@ public class AtendimentoControler {
 		return new ResponseEntity<>(atendimentosDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/criar")
+	@PostMapping("/criar-atendimento")
 	public ResponseEntity<AtendimentoGetDTO> create( @RequestBody AtendimentoRequestDTO atendimentoRequestDTO){
 		Atendimentos novoAtendimento = atendimentoServico.create(
 				atendimentoRequestDTO.getClienteId(),
@@ -49,27 +49,27 @@ public class AtendimentoControler {
 		return new ResponseEntity<>(atendimentoDTO, HttpStatus.CREATED);
 	}
 	
-	@PutMapping(value = "/atualizar")
+	@PutMapping("/atualizar")
 	public ResponseEntity<Void> update(@RequestBody AtendimentoRequestDTO atendimentoRequestDTO){
 		atendimentoServico.update(atendimentoRequestDTO);
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping(value = "/cancelar")
+	@DeleteMapping("/cancelar")
 	public ResponseEntity<Void> delete(@RequestParam Long id){
 		atendimentoServico.delete(id);
 		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping(value = "/barbeiros-disponiveis")
+	@GetMapping("/barbeiros-disponiveis")
 	public ResponseEntity<List<BarbeiroGetDTO>> buscarBarbeiros(){
 		List<BarbeiroGetDTO> barbeiros = atendimentoServico.findAllBarbeiros();
 		return new ResponseEntity<>(barbeiros, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/buscarPorIdBarbeiro")
+	@GetMapping("/buscarPorIdBarbeiro")
 	public ResponseEntity<List<ServicoGetDTO>> findServicoByIdBarbeiroId(@RequestParam Long barbeiroId){
 		List<ServicoGetDTO> servicos = atendimentoServico.findServicoByIdBarbeiroId(barbeiroId);
 		return new ResponseEntity<>(servicos, HttpStatus.OK);

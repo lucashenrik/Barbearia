@@ -32,13 +32,13 @@ public class ServicoControler {
 	
 	//ServicoGetDTO servicoGetDTO;
 	
-	@GetMapping(value = "/buscar")
+	@GetMapping("/buscar")
 	public ResponseEntity<List<ServicoGetDTO>> findAll(){
 		List<ServicoGetDTO> servicos = servicoServico.findAll();
 		return new ResponseEntity<>(servicos, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/buscarPorIdBarbeiro")
+	@GetMapping("/buscarPorIdBarbeiro")
 	public ResponseEntity<List<ServicoGetDTO>> findByIdBarbeiroId(@RequestParam Long barbeiroId){
 		List<ServicoGetDTO> servicos = servicoServico.findByIdBarbeiroId(barbeiroId);
 		return new ResponseEntity<>(servicos, HttpStatus.OK);
@@ -51,7 +51,7 @@ public class ServicoControler {
 		return new ResponseEntity<>(servicoDTO, HttpStatus.CREATED);
 	}*/
 	
-	@PostMapping(value = "/criar")
+	@PostMapping("/criar-servico")
 	public ResponseEntity<Void> create(@RequestBody ServicoRequestDTO servicoRequestDTO){
 		servicoServico.create(servicoRequestDTO);
 		return new ResponseEntity<>(HttpStatus.CREATED);
@@ -63,7 +63,7 @@ public class ServicoControler {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}*/
 	
-	@DeleteMapping(value = "/deletar")
+	@DeleteMapping("/deletar")
 	public ResponseEntity<Void> deletar(@RequestParam Long id){
 		servicoServico.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

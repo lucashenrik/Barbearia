@@ -40,14 +40,14 @@ public class HomeBarbeiroControler {
 	@Autowired
 	ServicoServico servicoServico;
 	
-	@GetMapping
+	@GetMapping("/atendimentos")
 	public ResponseEntity<List<AtendimentoGetDTO>> findAtendimentos(@RequestParam Long barbeiroId){
 		List<AtendimentoGetDTO> atendimentos = atendServico.findAtendimentosByBarbeiroId(barbeiroId);
 		
 		return new ResponseEntity<>(atendimentos, HttpStatus.OK);
 	}
 	
-	@GetMapping
+	@GetMapping("/horarios")
 	public ResponseEntity<List<LocalTime>> horariosDisponiveis(@PathVariable Long barbeiroId, @RequestParam LocalDateTime data){
 		List<LocalTime> horariosDisponiveis = horarioServico.getHorariosDisponiveisForBarbeiros(barbeiroId, data);
 		
