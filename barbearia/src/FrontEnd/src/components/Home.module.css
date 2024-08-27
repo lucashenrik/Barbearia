@@ -1,0 +1,54 @@
+/* Home.module.css */
+
+/* Contêiner principal */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente */
+  justify-content: flex-start; /* Move o conteúdo para o topo */
+  height: 100vh; /* Altura total da tela */
+  background-color: #f0f0f0;
+  padding: 20px; /* Padding opcional */
+  margin: 0; /* Remove margem externa */
+}
+
+/* Estilo para o texto de boas-vindas */
+.welcome-text {
+  font-family: 'Segoe UI Bold Italico';
+  font-size: 44px;
+  color: rgb(223, 120, 3);
+  margin: 0; /* Remove margens extras, se necessário */
+}
+
+/* Estilo para o título */
+h2 {
+  font-family: 'Segoe UI Italico';
+  font-size: 20px;
+  font-weight: 100;
+  color: #ececece8;
+}
+
+/* Estilo do botão */
+.home-button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #6200be;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Estilo do botão ao passar o mouse */
+.home-button:hover {
+  background-color: #51009c;
+}
+
+/* Contêiner dos botões */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

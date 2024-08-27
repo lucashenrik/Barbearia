@@ -1,0 +1,139 @@
+/* Contêiner principal */
+.container {
+  width: 100%; /* Largura total da tela */
+  max-width: 100%; /* Garante que o contêiner não exceda a largura da tela */
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0; /* Cor de fundo */
+  box-sizing: border-box; /* Inclui padding no tamanho total */
+}
+
+/* Título */
+h1 {
+  margin-top: 30px;
+  margin-bottom: 10;
+}
+
+h2{
+  font-size: 20px ;
+  margin-left: -70%;
+  margin-bottom: -10px;
+}
+
+/* Formulário */
+.formContainer {
+  color: #e6e6e6;
+  display: flex; /* Usar flexbox para alinhar os itens em linha */
+  flex-direction: row; /* Alinha os itens horizontalmente */
+  align-items: center; /* Centraliza os itens horizontalmente */
+  padding: 10%;
+  width: 30%; /* Ajusta a largura do formulário conforme necessário */
+  gap: 50px; /* Espaçamento entre os itens, ajuste conforme necessário */
+  margin-top: -60px;
+  margin-bottom: -140px;
+  margin-left: 20%;
+  border-radius: 12px; /* Arredondamento das bordas */
+}
+
+.formContainer > * {
+  flex: 1; /* Faz com que todos os itens dentro do formulário ocupem a mesma largura */
+}
+
+/* Estilos para o select */
+.formContainer select, input {
+  background-color: #ebebeb0c; /* Cor de fundo da caixa de seleção */
+  color: #ffffff; /* Cor do texto dentro da caixa de seleção */
+  border: 1px solid #ebebeb0c; /* Borda da caixa de seleção */
+  border-radius: 4px; /* Arredondamento das bordas */
+  padding: 8px; /* Espaçamento interno */
+  font-size: 16px; /* Tamanho da fonte */
+  font-family: 'Segoe UI Italico'; /* Família da fonte */
+  cursor: pointer; /* Cursor em forma de mão ao passar sobre o elemento */
+}
+
+/* Estilos para as opções dentro da caixa de seleção */
+.formContainer option {
+  background-color: #2c3e50; /* Cor de fundo das opções */
+  color: #ffffff; /* Cor do texto das opções */
+}
+
+input{
+ margin-left: -80px;
+}
+
+/* Rótulo */
+label {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o rótulo dentro do formulário */
+}
+
+/* Caixa de seleção */
+.box {
+  background-color: #1101180c; /* Cor de fundo do retângulo */
+  padding: 10px;
+  border-radius: 12px;
+  margin-top: 20px; /* Ajuste o espaçamento conforme necessário */
+  width: 80%; /* Garante que a caixa ocupe toda a largura disponível */
+}
+
+/* Lista de itens */
+.list {
+  font-family: 'Segoe UI Italico', sans-serif;
+  display: flex;
+  align-items: center;
+  /*flex-wrap: nowrap;  Evita que os itens se empilhem */
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  list-style: none;
+  color: #ebebebb4;
+  /*overflow-x: auto;  Permite rolar horizontalmente */
+ /* overflow-y: hidden;  Oculta a rolagem vertical */
+  width: 100%; /* Garante que a lista ocupe toda a largura disponível */
+}
+
+/* Estilo dos itens da lista */
+li {
+  background-color: #ebebeb0c;
+  padding: 10px;
+  border-radius: 14px;
+  text-align: center;
+  cursor: pointer;
+  min-width: 70px; /* Ajuste a largura mínima conforme necessário */
+}
+
+/* Estilos adicionais para itens selecionados */
+.selected {
+  background-color: #40007c;
+}
+
+.unselected {
+  background-color: #ebebeb0c;
+}
+
+/* Estilo do botão */
+button {
+  margin-top: 70px;
+  margin-left: 42%;
+  align-items: center;
+  padding: 10px;
+  background-color: #51009c;
+  color: rgb(219, 219, 219);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+
+}
+
+button:hover {
+  background-color: #40007c;
+}

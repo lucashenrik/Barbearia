@@ -1,0 +1,327 @@
+/* src/components/atendimentos/AtendimentoList.module.css */
+
+/* Estilo global */
+* {
+    font-family: 'Segoe UI Bold Italico';
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 12px;
+        /* Reduz o padding em telas menores */
+        max-width: 100%;
+        /* Permite que o contêiner use toda a largura disponível em telas pequenas */
+    }
+}
+
+.container {
+    background-color: #09131b;
+    padding: 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+body {
+    background-color: #09131b;
+    margin: 0;
+    color: rgb(255, 255, 255);
+}
+
+p {
+    font-family: 'Segoe UI Italico';
+    margin-left: 30px;
+    margin-top: 40px;
+    color: rgb(223, 120, 3);
+    font-size: 1.7em;
+}
+
+h1 {
+    color: rgb(209, 209, 209);
+    margin-top: -40px;
+    margin-left: 30px;
+    font-size: 44px;
+}
+
+.listItem {
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: #ebebeb0c;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border: none;
+    box-shadow: none;
+    cursor: default;
+    color: rgb(209, 209, 209);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 150px;
+    /* Define uma altura fixa para o item da lista */
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    order: 2;
+    /* Define a ordem para aparecer abaixo dos botões */
+}
+
+.barbeiroNome,
+.horario,
+.servicos,
+.valor {
+    position: relative;
+    /* Permite o uso de propriedades de deslocamento */
+    top: -170px;
+    /* Move os botões 50px para baixo */
+    margin: 3px 0;
+    overflow: hidden;
+}
+
+.barbeiroNome {
+    font-size: 20px;
+    margin-top: 3px;
+    margin-left: 85px;
+    display: flex;
+
+}
+
+.servicos {
+    margin-top: -3px;
+    margin-bottom: 0px;
+    margin-left: 40px;
+    display: flex;
+}
+
+.valor {
+    align-self: flex-end;
+    /* Alinha o valor à direita dentro do contêiner */
+    margin-top: 20px;
+    margin-right: 150px;
+    order: 3;
+    /* Define a ordem para aparecer abaixo dos botões */
+
+}
+
+.horario {
+    font-size: 16px;
+    margin-top: -2px;
+    margin-bottom: 10px;
+}
+
+/*
+.label {
+    font-family: 'Segoe UI Bold Italico';
+    color: #d6d6d6;
+}*/
+
+/* Contêiner para a rolagem horizontal */
+.horarioContainer {
+    display: flex;
+    overflow-x: auto;
+    /* Permite a rolagem horizontal */
+    overflow-y: hidden;
+    /* Oculta a rolagem vertical */
+    -webkit-overflow-scrolling: touch;
+    /* Suaviza o scrolling em dispositivos móveis */
+    padding: 10px 0;
+    /* Espaçamento opcional */
+    gap: 10px;
+    /* Espaçamento entre os itens */
+    scroll-behavior: smooth;
+    /* Suaviza o scroll */
+}
+
+/* Estilo para cada item da lista */
+.horarioBarbeiro {
+    background-color: #ebebeb0c;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    /* Evita quebra de linha dentro dos itens */
+    width: 50px;
+    /* Define uma largura mínima para os itens */
+    height: 40px;
+}
+
+.nome {
+    font-family: 'Segoe UI Italico';
+    font-weight: normal;
+    font-size: 15px;
+    color: rgb(223, 120, 3);
+}
+
+.buttonUpdate,
+.buttonDelete {
+    background-color: #51009c;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.buttonUpdate:hover,
+.buttonDelete:hover {
+    background-color: #40007c;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Alinha os botões à direita */
+    gap: 10px;
+    order: 1;
+    /* Define a ordem para aparecer acima dos detalhes e do valor */
+    width: 95%;
+    position: relative;
+    /* Permite o uso de propriedades de deslocamento */
+    top: -74px;
+    /* Move os botões 50px para baixo */
+}
+
+/* Estilo base para todos os botões */
+button {
+    font-family: 'Segoe UI Bold Italico', sans-serif;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    color: rgb(209, 209, 209);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    /* Definir fundo transparente para evitar cor não desejada */
+    margin-bottom: -30px;
+}
+
+.buttonCreate {
+    display: inline-block;
+    /* Certifique-se de que o botão se comporte como um bloco em linha */
+    position: relative;
+    left: 40%;
+
+}
+
+.buttonCreate button {
+    background-color: #51009c;
+    border: none;
+    /* Certifique-se de que não há bordas adicionais */
+    padding: 8px 12px;
+    /* Ajuste o padding se necessário */
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Segoe UI Bold Italico', sans-serif;
+    font-size: 14px;
+    color: rgb(209, 209, 209);
+    transition: background-color 0.3s ease;
+    outline: none;
+    box-shadow: none;
+    /* Adicione um tamanho fixo se necessário para evitar expansão inesperada */
+    width: fit-content;
+    /* Ajusta a largura ao conteúdo */
+    height: auto;
+    /* Ajusta a altura ao conteúdo */
+}
+
+.buttonCreate button:hover {
+    background-color: #40007c;
+}
+
+/* Estilo do botão ao passar o mouse */
+button:hover {
+    background-color: #40007c;
+    /* Roxo mais escuro */
+}
+
+/* Estilo específico para o botão de delete */
+.buttonDelete {
+    background-color: #ad2806f1;
+}
+
+.buttonDelete:hover {
+    background-color: #881b00f1;
+    /* Roxo mais escuro */
+}
+
+button:focus,
+button:active {
+    outline: none;
+    /* Remove o outline padrão ao receber foco */
+    box-shadow: none;
+    /* Remove qualquer box-shadow padrão */
+    border: none;
+    /* Remove qualquer borda padrão */
+    transform: scale(0.95);
+    /* Efeito de pressionar o botão */
+}
+
+.confirmPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #08131b;
+    color: #fff;
+    /* Ajustado para branco para maior contraste */
+    padding: 40px;
+    /* Reduzido para centralizar melhor */
+    border-radius: 14px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    text-align: center;
+    /* Centraliza o texto dentro do pop-up */
+}
+
+.confirmPopup p {
+    margin-bottom: 20px;
+    /* Espaço entre o texto e os botões */
+}
+
+.confirmButton {
+    display: inline-block;
+    /* Mantém os botões em linha */
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    color: #fff;
+    /* Cor do texto dos botões */
+}
+
+.confirmButton:first-of-type {
+    background-color: #ad2806f1;
+}
+
+.confirmButton:last-of-type {
+    background-color: #6200beb4;
+}
+
+.confirmButton:hover {
+    opacity: 0.8;
+}
+
+.detailsContainer {
+    margin-bottom: 15px;
+}
+
+.detailsContainer p {
+    margin: 5px 0;
+}

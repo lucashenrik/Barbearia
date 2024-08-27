@@ -22,6 +22,7 @@ public class SecurityConfigurations {
 
 	@Autowired
 	SecurityFilter securityFilter;
+	
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -30,22 +31,31 @@ public class SecurityConfigurations {
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/login")
 						.permitAll().requestMatchers(HttpMethod.POST, "/auth/registrar").permitAll()
 						.requestMatchers(HttpMethod.GET, "/barbeiros").hasAuthority(EnumRoles.BARBEIRO.getRole())
+						.requestMatchers(HttpMethod.GET, "/atendimento/barbeiros-disponiveis").permitAll()
+						.requestMatchers(HttpMethod.GET, "/atendimento/barbeiros-disponiveis").permitAll()
+						.requestMatchers(HttpMethod.GET, "/atendimento/buscarPorIdBarbeiro").permitAll()
 						.requestMatchers(HttpMethod.POST, "/barbeiros/registrar")
 						.hasAuthority(EnumRoles.ADMIN.getRole()).requestMatchers(HttpMethod.POST, "/barbeiros/login")
 						.hasAuthority(EnumRoles.BARBEIRO.getRole()).requestMatchers(HttpMethod.PUT, "/barbeiros")
 						.hasAuthority(EnumRoles.BARBEIRO.getRole()).requestMatchers(HttpMethod.DELETE, "/barbeiros")
 						.hasAuthority(EnumRoles.BARBEIRO.getRole()).requestMatchers(HttpMethod.GET, "/clientes")
-						.permitAll().requestMatchers(HttpMethod.POST, "/clientes").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/clientes").permitAll()
-						.requestMatchers(HttpMethod.GET, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
+						.permitAll().requestMatchers(HttpMethod.POST, "/cliente").permitAll()
+						.requestMatchers(HttpMethod.POST, "/cliente/criar").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/cliente").permitAll()
+						.requestMatchers(HttpMethod.GET, "/atendimentos").permitAll()
+						.requestMatchers(HttpMethod.POST, "/atendimentos").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/atendimentos").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/atendimentos").permitAll()
+						/*.requestMatchers(HttpMethod.GET, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
 						.requestMatchers(HttpMethod.POST, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
 						.requestMatchers(HttpMethod.PUT, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
-						.requestMatchers(HttpMethod.DELETE, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
+						.requestMatchers(HttpMethod.DELETE, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())*/
 						.requestMatchers(HttpMethod.DELETE, "/clientes").hasAuthority(EnumRoles.ADMIN.getRole())
 						.requestMatchers(HttpMethod.POST, "/admin/criar").permitAll().anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
-	}
-
+	} 
+	
+	 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {

@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'Segoe UI Bold Italico';
+  src: url('./assets/fonts/segoeuiz.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Segoe UI Italico' ;
+  src: url('./assets/fonts/SEGOEUII.TTF') format('truetype');
+}
+
+@font-face {
+  font-family: 'Rafigen';
+  src: url('./assets/fonts/RAFIGEN\ DEMO.TTF');
+}
+
+@font-face {
+  font-family: 'Mindthecaps';
+  src: url('./assets/fonts/MINDTHECAPS-DEMOVERSION.TTF');
+}
+body {
+  margin: 0;
+  font-family: 'MinhaFonte', sans-serif;
+}
+
+/*code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}*/

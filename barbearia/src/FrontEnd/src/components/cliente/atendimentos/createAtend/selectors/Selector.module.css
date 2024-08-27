@@ -1,0 +1,119 @@
+/* src/components/atendimentos/createAtend/selectors/Selector.module.css */
+/*.title {
+  font-family: 'Segoe UI Italico', sans-serif;
+  color: rgb(209, 209, 209);
+  font-size: 16px;
+  margin: 12px auto; 
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; 
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: #dcdcdc;
+}
+
+.unselected {
+  background-color: white;
+}
+
+.selected {
+  background-color: #8a3838;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.unselected {
+  background-color: #fff;
+  border: 2px solid #d3d3d3;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.box {
+  padding: 100px;
+  border-radius: 12px;
+  background-color: #ebebeb0c;
+  margin-top: 2px;
+}*/
+
+/* src/components/atendimentos/createAtend/selectors/Selector.module.css */
+.title {
+  font-family: 'Segoe UI Italico', sans-serif;
+  color: rgb(223, 120, 3);
+  font-size: 16px;
+  margin: 12px auto; 
+  margin-bottom: -80px;
+  text-align: start; /* Alinha o texto à esquerda */
+  width: 100%; /* Garante que o texto ocupe toda a largura disponível */
+  box-sizing: border-box; /* Inclui padding no tamanho total */
+}
+
+.list {
+  font-family: 'Segoe UI Italico', sans-serif;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px; /* Espaçamento entre os itens */
+  padding: 0px;
+  margin: 0px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  list-style: none;
+  color: #ebebebb4;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+li:hover {
+  background-color: #6200be49;
+}
+
+.box {
+  background-color: #ebebeb00;
+  padding: 10px; /* Reduzido ainda mais para 5px */
+  border-radius: 12px;
+  margin-top: 90px; /* Reduzi o espaçamento entre as caixas */
+
+}
+
+.boxList {
+  background-color: #ebebeb0c;
+   /*padding: 50px; Diminuir o padding dentro dos itens */
+  margin: 5px; /* Adicionar um pouco de espaço entre os itens */
+  
+}
+
+.barbeiroBoxList {
+  background-color: #ebebeb0c;
+  padding: 50px; /* Tamanho específico para o barbeiro */
+  border-radius: 14px;
+}
+
+.servicoBoxList {
+  padding: 25px; /* Tamanho específico para o servico */
+  border-radius: 14px;
+}
+
+.horarioBoxList {
+  padding: 20px; /* Tamanho específico para o horario */
+  border-radius: 14px;
+}
+
+
+.selected {
+  background-color: #6200be49;
+  /*border: 2px solid #000;*/
+  cursor: pointer;
+}
+
+

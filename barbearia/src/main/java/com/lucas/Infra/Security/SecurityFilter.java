@@ -38,7 +38,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 		//System.out.println("Requisição para: " + path);
 
 		// Ignora a validação de token para as rotas de login e registro
-		if (path.equals("/auth/login") || path.equals("/auth/registrar")) {
+		if (path.equals("/auth/login") || path.equals("/auth/registrar") || path.equals("/cliente/criar") || path.equals("/atendimento") || path.equals("/barbeiros")) {
 			filterChain.doFilter(request, response);
 			return;
 		}

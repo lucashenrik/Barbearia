@@ -1,0 +1,146 @@
+/* Estilo global */
+* {
+    font-family: 'Segoe UI Italico';
+}
+
+.body {
+    background-color: #09131b;
+    padding: 18px;
+    border-radius: 8px;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+h1{
+    font-family: 'Segoe UI Italico';
+    font-size: 20px;
+    color: rgb(223, 120, 3);
+    margin-top: 30px;
+    margin-left: 40px;
+}
+
+p{
+    font-family: 'Segoe UI Bold Italico';
+    color: #ececece8;
+    font-size: 44px;
+    margin-bottom: 30px;
+    margin-top: -20px;
+}
+
+.listItem {
+    display: inline-block;
+    padding: 20px;
+    border-radius: 14px;
+    background-color: #ebebeb0c;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    color: rgb(209, 209, 209);
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 150px;
+    width: 200px;
+    margin-right: 20px;
+    /* Espaçamento entre os itens */
+    margin-bottom: 16px;
+    position: relative;
+    /* Necessário para o posicionamento dos botões */
+    white-space: normal;
+    /* Permite que o conteúdo quebre para a linha de baixo */
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.nomeServico {
+    font-family: 'Segoe UI Italico';
+    font-size: 16px;
+    color: #ececece8;
+}
+
+.valor {
+    color: rgb(223, 120, 3);
+}
+
+.servicoNome,
+.valor {
+    margin: 10px;
+
+}
+
+.label {
+    font-family: 'Segoe UI Italico';
+    margin-bottom: 4px;
+
+}
+
+/* Estilos para o select */
+.formContainer select {
+    background-color: #ebebeb0c;
+    /* Cor de fundo da caixa de seleção */
+    color: #ffffff;
+    /* Cor do texto dentro da caixa de seleção */
+    border: 1px solid #ebebeb0c;
+    /* Borda da caixa de seleção */
+    border-radius: 4px;
+    /* Arredondamento das bordas */
+    padding: 8px;
+    /* Espaçamento interno */
+    font-size: 16px;
+    /* Tamanho da fonte */
+    font-family: 'Segoe UI Italico';
+    /* Família da fonte */
+    cursor: pointer;
+    /* Cursor em forma de mão ao passar sobre o elemento */
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    /* Centraliza horizontalmente */
+    align-items: center;
+    /* Centraliza verticalmente */
+    height: 100vh;
+    /* Ajuste a altura conforme necessário */
+    background-color: #51009c;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Segoe UI Bold Italico', sans-serif;
+    font-size: 14px;
+    color: #ececece8;
+    transition: background-color 0.3s ease;
+    outline: none;
+    box-shadow: none;
+    width: fit-content;
+    height: auto;
+    margin: 0;
+}
+
+.button button:hover {
+    background-color: #40007c;
+}
+
+button:hover {
+    background-color: #40007c;
+}
+
+.buttonDelete {
+    background-color: #51009c;
+    border: none;
+    color: #ececece8;
+    padding: 4px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+/*.buttonDelete:hover {
+    background-color: #40007c;
+}*/

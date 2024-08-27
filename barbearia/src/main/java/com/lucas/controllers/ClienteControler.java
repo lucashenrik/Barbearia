@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import com.lucas.services.ClienteServico;
 
 @RestController
 @RequestMapping("/cliente")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ClienteControler {
     
     @Autowired
@@ -36,15 +38,16 @@ public class ClienteControler {
     }
     
     @PostMapping("/criar")
-    public ResponseEntity<Void> createCliente(@RequestBody Cliente cliente){
+    public ResponseEntity<String> createCliente(@RequestBody Cliente cliente) {
         Cliente novoCliente = clienteServico.create(cliente);
-        
+
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-        		.path("/atendimento")
-        		.queryParam("clienteId", novoCliente.getId())
-        		.build()
-        		.toUri();
-        return ResponseEntity.created(location).build();
+                .path("/atendimento")
+                .queryParam("clienteId", novoCliente.getId())
+                .build()
+                .toUri();
+
+        return ResponseEntity.created(location).body(novoCliente.getId().toString());
     }
     
     @PutMapping("/atualizar")

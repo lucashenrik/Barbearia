@@ -1,0 +1,66 @@
+package com.lucas.Infra.Security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.lucas.models.EnumRoles;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfigurations {
+
+	@Autowired
+	SecurityFilter securityFilter;
+	
+
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+		return httpSecurity.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, "/auth/login")
+						.permitAll().requestMatchers(HttpMethod.POST, "/auth/registrar").permitAll()
+						.requestMatchers(HttpMethod.GET, "/barbeiros").hasAuthority(EnumRoles.BARBEIRO.getRole())
+						.requestMatchers(HttpMethod.POST, "/barbeiros/registrar")
+						.hasAuthority(EnumRoles.ADMIN.getRole()).requestMatchers(HttpMethod.POST, "/barbeiros/login")
+						.hasAuthority(EnumRoles.BARBEIRO.getRole()).requestMatchers(HttpMethod.PUT, "/barbeiros")
+						.hasAuthority(EnumRoles.BARBEIRO.getRole()).requestMatchers(HttpMethod.DELETE, "/barbeiros")
+						.hasAuthority(EnumRoles.BARBEIRO.getRole()).requestMatchers(HttpMethod.GET, "/clientes")
+						.permitAll().requestMatchers(HttpMethod.POST, "/cliente").permitAll()
+						.requestMatchers(HttpMethod.POST, "/cliente/criar").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/cliente").permitAll()
+						.requestMatchers(HttpMethod.GET, "/atendimentos").permitAll()
+						.requestMatchers(HttpMethod.POST, "/atendimentos").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/atendimentos").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/atendimentos").permitAll()
+						/*.requestMatchers(HttpMethod.GET, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
+						.requestMatchers(HttpMethod.POST, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
+						.requestMatchers(HttpMethod.PUT, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())
+						.requestMatchers(HttpMethod.DELETE, "/atendimentos").hasAuthority(EnumRoles.CLIENTE.getRole())*/
+						.requestMatchers(HttpMethod.DELETE, "/clientes").hasAuthority(EnumRoles.ADMIN.getRole())
+						.requestMatchers(HttpMethod.POST, "/admin/criar").permitAll().anyRequest().authenticated())
+				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
+	} 
+	
+	 
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+}

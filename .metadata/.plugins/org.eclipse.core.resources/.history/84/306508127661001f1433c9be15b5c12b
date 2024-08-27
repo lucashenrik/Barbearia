@@ -1,0 +1,113 @@
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import styles from './AtendimentosList.module.css';
+
+const AtendimentoList = () => {
+  const [atendimentos, setAtendimentos] = useState([]);
+  const [currentAtendimentoId, setCurrentAtendimentoId] = useState(null);
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const { clienteId } = useParams(); // Obtém o clienteId da URL
+
+  useEffect(() => {
+    // Buscar atendimentos do cliente
+    if (clienteId) {
+      axios.get(`/atendimento?clienteId=${clienteId}`)
+        .then(response => {
+          setAtendimentos(response.data);
+        })
+        .catch(error => {
+          console.error("Erro ao buscar atendimentos:", error);
+        });
+    }
+  }, [clienteId]);
+
+  const handleConfirmCancel = () => {
+    if (currentAtendimentoId === null) {
+      console.error('ID de atendimento atual não definido.');
+      return;
+    }
+
+    axios.delete(`/atendimento/cancelar?id=${currentAtendimentoId}`)
+      .then(response => {
+        if (response.status === 204) { // Verifica se o status é 204 (No Content)
+          alert('Atendimento cancelado com sucesso');
+          setAtendimentos(atendimentos.filter(atendimento => atendimento.id !== currentAtendimentoId));
+          setShowConfirmPopup(false);
+        } else {
+          console.error('Erro inesperado ao cancelar atendimento:', response);
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao cancelar atendimento:', error);
+        setShowConfirmPopup(false); // Fechar o pop-up mesmo se houver erro
+      });
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.main}>
+        <p>Meus</p>
+        <h1>Atendimentos</h1>
+        <div className={styles.box}>
+          <ul>
+            {atendimentos.map(atendimento => (
+              <li key={atendimento.id} className={styles.listItem}>
+                <div className={styles.details}>
+                  <div className={styles.horario}>
+                    <span className={styles.label}>{atendimento.horario}</span>
+                  </div>
+                  <div className={styles.barbeiroNome}>
+                    <span className={styles.label}>{atendimento.barbeiroNome}</span>
+                  </div>
+                  <div className={styles.servicos}>
+                    <span className={styles.nome}>{atendimento.servicos.join(', ')}</span>
+                  </div>
+                  <div className={styles.valor}>
+                    <span className={styles.label}>Valor: R$ </span>
+                    <span className={styles.nome}>{atendimento.valor.toFixed(2)}</span>
+                  </div>
+                </div>
+                <div className={styles.buttonContainer}>
+                  <Link to={`/atualizar-atendimento/${atendimento.id}`}>
+                    <button className={styles.buttonUpdate}>
+                      Atualizar
+                    </button>
+                  </Link>
+                  <button 
+                    className={styles.buttonDelete} 
+                    onClick={() => { 
+                      setCurrentAtendimentoId(atendimento.id); 
+                      setShowConfirmPopup(true); 
+                    }}
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div>
+        {clienteId && (
+          <Link to={`/criar-atendimento/${clienteId}`}>
+            <button className={styles.buttonUpdate}>
+              Novo Atendimento
+            </button>
+          </Link>
+        )}
+      </div>
+
+      {showConfirmPopup && (
+        <div className={styles.popup}>
+          <p>Tem certeza que deseja cancelar este atendimento?</p>
+          <button onClick={handleConfirmCancel}>Confirmar</button>
+          <button onClick={() => setShowConfirmPopup(false)}>Cancelar</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AtendimentoList;

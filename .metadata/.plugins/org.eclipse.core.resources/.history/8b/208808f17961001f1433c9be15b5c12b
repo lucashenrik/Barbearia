@@ -1,0 +1,117 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
+import BarbeiroSelector from './selectors/BarbeiroSelector';
+import ServicoSelector from './selectors/ServicoSelector';
+import HorarioSelector from './selectors/HorarioSelector';
+import styles from './CreateAtendimento.module.css';
+
+const CreateAtendimento = ({ modo, atendimento }) => {
+  const [barbeiros, setBarbeiros] = useState([]);
+  const [selectedBarbeiroId, setSelectedBarbeiroId] = useState(atendimento?.barbeiroId || null);
+  const [servicos, setServicos] = useState([]);
+  const [selectedServicos, setSelectedServicos] = useState(atendimento?.servicos || []);
+  const [horarios, setHorarios] = useState([]);
+  const [selectedHorario, setSelectedHorario] = useState(atendimento?.horario || '');
+  const [clienteId, setClienteId] = useState(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const clienteIdQuery = query.get('clienteId');
+
+  useEffect(() => {
+    if (clienteIdQuery) {
+      setClienteId(clienteIdQuery);
+    }
+  }, [clienteIdQuery]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/barbeiros/buscar')
+      .then(response => setBarbeiros(response.data))
+      .catch(error => console.error("Erro ao buscar barbeiros:", error));
+  }, []);
+
+  useEffect(() => {
+    if (selectedBarbeiroId) {
+      axios.get(`/atendimento/buscarPorIdBarbeiro?barbeiroId=${selectedBarbeiroId}`)
+        .then(response => setServicos(response.data))
+        .catch(error => console.error("Erro ao buscar serviços:", error));
+    }
+  }, [selectedBarbeiroId]);
+
+  useEffect(() => {
+    if (selectedBarbeiroId && selectedServicos.length) {
+      // Utilize a data selecionada corretamente. Aqui, você precisa substituir '1' pela data real selecionada.
+      const duracaoServico = selectedServicos.reduce((acc, servico) => acc + servico.duracao, 0);
+      axios.get(`/atendimento/horarios-disponiveis?barbeiroId=${selectedBarbeiroId}&data=${new Date().toISOString().split('T')[0]}&duracaoServico=${duracaoServico}`)
+        .then(response => setHorarios(response.data))
+        .catch(error => console.error("Erro ao buscar horários:", error));
+    }
+  }, [selectedBarbeiroId, selectedServicos]);
+
+  const handleCreateAtendimento = () => {
+    // Criação do atendimento
+    const atendimentoData = {
+      clienteId,
+      barbeiroId: selectedBarbeiroId,
+      servicos: selectedServicos,
+      horario: selectedHorario
+    };
+
+    axios.post('/atendimento/criar', atendimentoData)
+      .then(() => {
+        console.log("Atendimento criado com sucesso!");
+        navigate('/atendimento'); // Redireciona para a lista de atendimentos
+      })
+      .catch(error => console.error("Erro ao criar atendimento:", error));
+  };
+
+  const showButton = selectedBarbeiroId !== null &&
+    selectedServicos.length > 0 &&
+    selectedHorario !== '';
+
+  return (
+    <div className={styles.container}>
+      <p className={styles.title}>
+        {modo === 'atualizar' ? 'Alterar Atendimento' : 'Criar Atendimento'}
+      </p>
+
+      <div className={styles.selectorContainer}>
+        <BarbeiroSelector
+          barbeiros={barbeiros}
+          selectedBarbeiroId={selectedBarbeiroId}
+          onSelect={setSelectedBarbeiroId}
+        />
+      </div>
+
+      {selectedBarbeiroId && (
+        <div className={styles.selectorContainer}>
+          <ServicoSelector
+            servicos={servicos}
+            selectedServicos={selectedServicos}
+            onSelect={setSelectedServicos}
+          />
+        </div>
+      )}
+
+      {selectedServicos.length > 0 && (
+        <div className={styles.selectorContainer}>
+          <HorarioSelector
+            horarios={horarios}
+            selectedHorario={selectedHorario}
+            onSelect={setSelectedHorario}
+          />
+        </div>
+      )}
+
+      {showButton && (
+        <button className={styles.button} onClick={handleCreateAtendimento}>
+          {modo === 'atualizar' ? 'Atualizar Atendimento' : 'Criar Atendimento'}
+        </button>
+      )}
+    </div>
+  );
+};
+
+export default CreateAtendimento;

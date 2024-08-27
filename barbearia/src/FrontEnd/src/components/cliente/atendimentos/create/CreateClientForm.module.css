@@ -1,0 +1,77 @@
+/* src/components/create/CreateClientForm.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+    --Register: "Open-sans", system-ui;
+}
+
+* {
+   
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif, Times, serif, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+
+.principal {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+  
+    height: max-content;
+    background-color: #F6E9B2;
+    border-radius: 10px;
+    padding-top: 80px;
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-bottom: 80px;
+}
+
+.title {
+   color: black;
+    margin: 0px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.7em;
+}
+
+.subtitle {
+    color: black;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: 1em;
+}
+
+.form {
+    text-align: center;
+}
+
+.input {
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.075), 0 4px 10px 0 rgba(0, 0, 0, 0.082);
+    background-color: #B6D094;
+    margin: 6px;
+    border-width: 8px;
+    border-color: rgba(0, 0, 0, 0);
+    border-radius: 5px;
+    padding-top: 4px;
+    width: 200px;
+    outline: none;
+}
+
+.buttonmake {
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.075), 0 4px 10px 0 rgba(0, 0, 0, 0.082);
+    width: 150px;
+    border-radius: 20px;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 40px;
+    border-color: rgba(0, 0, 0, 0);
+    background-color: #B6D094;
+    outline: none;
+}
+
+.buttonmake:hover {
+    background-color: #aece86;
+}
